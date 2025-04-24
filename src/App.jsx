@@ -1,34 +1,30 @@
-import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Profile from './pages/Profile';
-import AdminProfile from './pages/AdminProfile';
-import Header from './components/Header';
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
+import Login from './pages/Login';
+import { useAuth } from './contexts/AuthContext';
+import Favorites from './pages/Favorites';
 
-function App() {
-  const token = localStorage.getItem('token');
-  const roles = JSON.parse(localStorage.getItem('roles') || '[]');
+export default function App() {
+  const { user } = useAuth();
 
-  return( <>
-  <Header />
-    <Routes>
-      
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route
-        path="/profile"
-        element={token && !roles.includes('ROLE_ADMIN') ? <Profile /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/admin/profile"
-        element={token && roles.includes('ROLE_ADMIN') ? <AdminProfile /> : <Navigate to="/signin" />}
-      />
-      {/* other routes… */}
-      <Route path="*" element={<Navigate to={token ? (roles.includes('ROLE_ADMIN') ? '/admin/profile' : '/profile') : '/signin'} />} />
-    </Routes>
-    </>
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <div className="container mx-auto px-4 py-6">
+        <Routes>
+        <Route path="/favorites" element={<Favorites />} />
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/" replace />}
+          />
+          <Route path="/" element={<Home />} />
+          <Route path="/country/:code" element={<Detail />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
-
-
-export default App
