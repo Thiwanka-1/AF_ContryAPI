@@ -15,8 +15,10 @@ export default function Favorites() {
       setLoading(true);
       const data = [];
       for (const code of favorites) {
-        const c = await fetchCountryByCode(code);
-        data.push(c[0]);
+        try {
+          const res = await fetchCountryByCode(code);
+          data.push(res[0]);
+        } catch {}
       }
       setCountries(data);
       setLoading(false);
@@ -25,12 +27,12 @@ export default function Favorites() {
     else setCountries([]);
   }, [favorites]);
 
+  if (loading) return <Loading />;
+
   return (
     <div>
-      <h1 className="text-2xl mb-4">Your Favorites</h1>
-      {loading ? (
-        <Loading />
-      ) : countries.length ? (
+      <h1 className="text-2xl font-bold mb-4">Your Favorites</h1>
+      {countries.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {countries.map(c => (
             <CountryCard key={c.cca3} country={c} />

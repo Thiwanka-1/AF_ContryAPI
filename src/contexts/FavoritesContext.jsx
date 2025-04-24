@@ -8,7 +8,7 @@ export function FavoritesProvider({ children }) {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
 
-  // Load favorites when user logs in/out
+  // load when user changes
   useEffect(() => {
     if (user) {
       const stored = localStorage.getItem(`favorites_${user.username}`);
@@ -27,7 +27,10 @@ export function FavoritesProvider({ children }) {
     }
     setFavorites(updated);
     if (user) {
-      localStorage.setItem(`favorites_${user.username}`, JSON.stringify(updated));
+      localStorage.setItem(
+        `favorites_${user.username}`,
+        JSON.stringify(updated)
+      );
     }
   };
 
