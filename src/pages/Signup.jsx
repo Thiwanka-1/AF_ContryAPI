@@ -77,7 +77,7 @@ export default function Signup() {
       </div>
       <div className="hidden md:block md:w-1/2">
         <img
-          src="https://source.unsplash.com/featured/800x600?signup"
+          src="https://img.freepik.com/free-photo/travel-again-concept-arrangement_23-2149064590.jpg?ga=GA1.1.1617633811.1740464666&semt=ais_hybrid&w=740"
           alt="Sign up illustration"
           className="w-full h-full object-cover rounded-l-lg"
         />
