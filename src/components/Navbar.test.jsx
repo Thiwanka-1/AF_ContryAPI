@@ -8,7 +8,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 describe('Navbar', () => {
   afterEach(() => localStorage.clear());
 
-  it('shows Login when not authenticated', () => {
+  it('shows Sign Up and Log In when not authenticated', () => {
     render(
       <AuthProvider>
         <MemoryRouter>
@@ -16,12 +16,18 @@ describe('Navbar', () => {
         </MemoryRouter>
       </AuthProvider>
     );
-    expect(screen.getByText('Login')).toBeInTheDocument();
+
+    expect(screen.getByText('Sign Up')).toBeInTheDocument();
+    expect(screen.getByText('Log In')).toBeInTheDocument();
     expect(screen.queryByText('Favorites')).toBeNull();
+    expect(screen.queryByText(/Hello,/)).toBeNull();
+    expect(screen.queryByText('Logout')).toBeNull();
   });
 
-  it('shows Favorites and Logout when authenticated', () => {
-    localStorage.setItem('user', JSON.stringify({ username: 'alice' }));
+  it('shows Favorites, greeting, and Logout when authenticated', () => {
+    // Simulate a logged-in user
+    localStorage.setItem('currentUser', JSON.stringify({ username: 'alice' }));
+
     render(
       <AuthProvider>
         <MemoryRouter>
@@ -29,8 +35,11 @@ describe('Navbar', () => {
         </MemoryRouter>
       </AuthProvider>
     );
+
     expect(screen.getByText('Favorites')).toBeInTheDocument();
     expect(screen.getByText('Hello, alice')).toBeInTheDocument();
     expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.queryByText('Sign Up')).toBeNull();
+    expect(screen.queryByText('Log In')).toBeNull();
   });
 });
