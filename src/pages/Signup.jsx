@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { FaUserPlus } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUserPlus } from 'react-icons/fa';
 
 export default function Signup() {
   const [username, setUsername]   = useState('');
   const [password, setPassword]   = useState('');
   const [error, setError]         = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { signup }                = useAuth();
   const navigate                  = useNavigate();
 
@@ -47,18 +48,26 @@ export default function Signup() {
                 className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="signup-password" className="block mb-1 font-medium">
                 Password
               </label>
               <input
                 id="signup-password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="Choose a password"
                 className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
+              <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 mt-7"
+                  tabIndex={-1}
+                            >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+               </button>
             </div>
             <button
               type="submit"
